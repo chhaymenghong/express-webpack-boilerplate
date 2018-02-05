@@ -1,8 +1,7 @@
-const express = require('express');
-// A Router instance is a complete middleware and routing system; for this reason, it is often referred to as a “mini-app”.
-const router = express.Router();
+const router = require('express').Router();
 
 // middleware that is specific to this router
+// we can add common logic to this all the routes this router handle through here
 router.use(function timeLog (req, res, next) {
     console.log('Time: ', Date.now());
     next()

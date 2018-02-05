@@ -1,14 +1,24 @@
+/**
+ * Generate the bundle and reports any issues
+ * ( same thing as running webpack on the command line )
+ */
+
 /*eslint-disable no-console */
 const webpack = require('webpack');
 const webpackConfig = require('../webpack.config.prod');
 const chalk = require('chalk');
 
-// this assures the Babel dev config doesn't apply.
+// a lot of libraries run differently based on this setting ( babel .... )
 process.env.NODE_ENV = 'production';
 
-console.log(chalk.blue('Generating bundle for production....'));
+console.log(chalk.blue('Generating a dist folder for use in production....'));
 
 webpack(webpackConfig).run((err, stats) => {
+    _generateStates(err, stats);
+    return 0;
+});
+
+function _generateStates(err, stats) {
     if (err) {
         console.log(chalk.red(err));
         return 1;
@@ -28,7 +38,5 @@ webpack(webpackConfig).run((err, stats) => {
     console.log(`Webpack stats: ${stats}`);
 
     // if we got this far, the build succeeded.
-    console.log(chalk.green('Build successful! Check dist folder!'));
-
-    return 0;
-});
+    console.log(chalk.green('Production build is successful and is available in dist folder'));
+}

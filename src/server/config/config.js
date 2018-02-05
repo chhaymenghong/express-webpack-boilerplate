@@ -7,9 +7,5 @@ module.exports = {
 
     isProductionMode() {
         return process.env.NODE_ENV === "production";
-    },
-
-    isTestMode() {
-        return process.env.NODE_ENV === "test";
     }
 };

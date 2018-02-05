@@ -1,5 +1,5 @@
 let path = require("path");
-let webpack = require("webpack");
+// let webpack = require("webpack");
 let merge = require("webpack-merge");
 let baseWebpackConfig = require("./webpack.config.base");
 // baseWebpackConfig.entry.app.unshift("webpack-hot-middleware/client");
@@ -7,6 +7,15 @@ let baseWebpackConfig = require("./webpack.config.base");
 module.exports = merge(baseWebpackConfig,{
     // ( compilation speed vs quality ). There are different levels of sourcemapping quality
     devtool: 'inline-source-map',
+
+    // in dev mode, webpack actually serve contents from memory, so the output path is not really doing anything
+    output: {
+        path: path.resolve(__dirname, 'src'),
+        // (during dev mode, these configs are not used)
+        publicPath: '/',
+        filename: 'bundle.js'
+    },
+
 
     plugins: [
         // uncomment to to set all use all loader in debug mode ( or just set in the loader itself
@@ -16,7 +25,6 @@ module.exports = merge(baseWebpackConfig,{
         //     debug: true
         // })
         // new webpack.HotModuleReplacementPlugin(),
-        // new webpack.NoErrorsPlugin()
         // new webpack.ProgressPlugin(function handler(percentage, msg) {/* ... */})
     ],
 });

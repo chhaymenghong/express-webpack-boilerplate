@@ -3,37 +3,32 @@
     "version": "1.0.0",
     "description": "Boilerplate for express project with webpack",
     "scripts": {
+        "clean-dist": "rimraf ./dist && mkdir dist",
+        "security-check": "nsp check",
         "lint": "esw ./build/webpack.config.* src --color",
         "lint:watch": "npm run lint -- --watch",
-        "security-check": "nsp check",
-        "startServer": "node src/server/core/main.js",
-        "clean-dist": "rimraf ./dist && mkdir dist",
+        "prod-server": "NODE_ENV=production node src/server/server.js",
+        "dev-server": "NODE_ENV=development node src/server/server.js",
+        "build": "node ./build/scripts/prodBuild",
+
+        "dev": "npm-run-all --parallel dev-server security-check lint:watch",
+
+        "preprod": "npm-run-all --parallel security-check lint clean-dist",
+        "prod": "npm-run-all build prod-server",
 
 
-
-        "dev": "npm-run-all --parallel startServer security-check lint:watch",
-
-        "preprod": "npm-run-all clean-dist lint",
-        "prod": "node ./build/scripts/prodBuild",
-        "postprod": "",
-
-
-        "prebuild": "npm-run-all clean-dist test lint",
-        "build": "babel-node buildScripts/build.js",
-        "postbuild": "babel-node buildScripts/distServer.js",
-
-        "prestart": "babel-node buildScripts/startMessage.js",
-        "start": "npm-run-all --parallel security-check open:src lint:watch test:watch start-mockapi",
-        "open:src": "babel-node buildScripts/srcServer.js",
+        "deploy": "surge ./dist",
         "localtunnel": "lt --port 3000",
         "share": "npm-run-all --parallel open:src localtunnel",
         "test": "mocha --reporter progress buildScripts/testSetup.js \"src/**/*.test.js\"",
         "test:watch": "npm run test -- --watch",
+
+        "prestart": "babel-node buildScripts/startMessage.js",
+        "start": "npm-run-all --parallel security-check open:src lint:watch test:watch start-mockapi",
+        "open:src": "babel-node buildScripts/srcServer.js",
         "generate-mock-data": "babel-node buildScripts/generateMockData",
         "prestart-mockapi": "npm run generate-mock-data",
         "start-mockapi": "json-server --watch src/api/db.json --port 3001",
-
-        "deploy": "surge ./dist"
     },
     "author": "Menghong Chhay",
     "license": "MIT",
