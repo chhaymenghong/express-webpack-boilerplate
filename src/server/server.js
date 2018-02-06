@@ -77,7 +77,10 @@ function _serveAppInDevMode(app) {
     app.use(devMiddleware(compiler, {
         logLevel: 'info',
         publicPath: webpackConfig.output.publicPath,
-        stats: {colors: true}
+        stats: {colors: true},
+        headers : {
+            'Cache-control': 'max-age=31536000'
+        }
     }));
     app.use(require("webpack-hot-middleware")(compiler));
 }

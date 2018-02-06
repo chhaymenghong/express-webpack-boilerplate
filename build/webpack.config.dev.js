@@ -4,16 +4,16 @@ const merge = require("webpack-merge");
 const baseWebpackConfig = require("./webpack.config.base");
 module.exports = merge(baseWebpackConfig,{
     entry: {
-        vendor: ['jquery'], // add lib dependencies here
-        main: [path.resolve(__dirname, '../src/client/js/main'), 'webpack-hot-middleware/client?reload=true&noInfo=true']
+        main: [path.resolve(__dirname, '../src/client/js/main'),
+            // enable hot reloading
+            'webpack-hot-middleware/client?reload=true&noInfo=true']
     },
 
-    // this is prefix to all our static resources.
-    // when this is set, the path for our bundle stuff in index.html will also change to include this publicPath value
-    // ie: 'publicPath:'/dist' => in index.html script src="/dist/main.js"
     output: {
-        path: path.resolve(__dirname, '../dist'),
-        publicPath: '/',
+        // must use hash instead of chunkhash because we uses hot module reloading
+        // also because of this long term caching in dev mode is not working, because hash
+        // is generated as a result of the whole changes ( vendor, manifest, custom codes ..)
+        // chunkhash is generated for each bundle
         filename: '[name].[hash].js'
     },
 
@@ -29,9 +29,7 @@ module.exports = merge(baseWebpackConfig,{
 
         // in dev only ( only use this with webpack-dev-server, but since we are using webpack-dev-middleware,
         new webpack.HotModuleReplacementPlugin(),
-
     ]
-
 });
 
 

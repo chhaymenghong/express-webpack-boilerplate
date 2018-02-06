@@ -1,9 +1,18 @@
 const webpack = require('webpack');
+const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 // const path = require('path');
 module.exports =  {
+    entry: {
+        vendor: ['jquery'] // add lib dependencies here
+    },
+
+    output: {
+        path: path.resolve(__dirname, '../dist'),
+        publicPath: '/'
+    },
 
     // show warning when bundle files reach certain threshold
     performance: {
@@ -12,6 +21,7 @@ module.exports =  {
 
     // default is web ( so can omit this ). Tell webpack to build specifically for web environment
     target: 'web',
+
     // add plugins to enhance webpack power ( linting, hot reloading, linting style ... )
     plugins: [
         // extract css contents and bundle them into a single file
@@ -50,6 +60,7 @@ module.exports =  {
             name: 'manifest'
         })
     ],
+
     module: {
         rules: [
             {test: /\.js$/, exclude: /node_modules/, use: [{loader: 'babel-loader'}]},
