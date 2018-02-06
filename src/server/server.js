@@ -62,7 +62,7 @@ function _serveAppInProdMode(app) {
     // tell express that "dist" will be the root directory to serve static files from ( excluding
     // the one we handle manually ( see app.get('/') below ) automatically requested resources will be served from here
     // ( make sure to use path.resolve to get the correct absolute path
-    app.use(express.static(path.resolve(__dirname, '../../dist')));
+    app.use(express.static(path.resolve(__dirname, '../../dist'), { maxAge: '1y' }));
 }
 
 function _serveAppInDevMode(app) {
@@ -78,11 +78,8 @@ function _serveAppInDevMode(app) {
         logLevel: 'info',
         publicPath: webpackConfig.output.publicPath,
         stats: {colors: true}
-        // headers: { "Access-Control-Allow-Origin": "*" }
     }));
-
-    // const hotMiddleware = require('webpack-hot-middleware');
-    // app.use(hotMiddleware(compiler, {}));
+    app.use(require("webpack-hot-middleware")(compiler));
 }
 
 
